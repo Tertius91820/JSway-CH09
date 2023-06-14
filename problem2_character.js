@@ -1,8 +1,8 @@
 //Character inventot=ry 
 //Improve the example RPG to add character inventory management according to the following rules:
-//A character's inventory contains a number of gold and a number of keys.
-//Each character description must show the inventory state.
-//When a character slays another character , the victim's inventory goes to its vanquisher.
+//A character's inventory contains a number of gold and a number of keys.-done
+//Each character description must show the inventory state.-done
+//When a character slays another character , the victim's inventory goes to its vanquisher.-done
 
 class Character {
   constructor(name,health,strength){
@@ -10,6 +10,8 @@ class Character {
     this.health = health;
     this.strength = strength;
     this.xp = 0
+	 this.gold = 10
+	 this.keys = 1
   }
   attack(target){
     if(this.health > 0){
@@ -21,9 +23,13 @@ class Character {
       }else{
         target.health = 0
         const bonusXP = 10
-        console.log(`${this.name} eliminated ${target.name} and wins ${bonusXP} experience points.`
+        console.log(`${this.name} eliminated ${target.name} and wins ${bonusXP} experience points,${target.gold} gold,and ${target.keys} key(s).`
         );
         this.xp += bonusXP
+		  this.gold += target.gold
+		  this.keys += target.keys
+		  target.gold = 0
+		  target.keys = 0
       }
     }else{
 		console.log(`${this.name} can't attack (they've been eliminated)`);
@@ -31,11 +37,26 @@ class Character {
   }
 
 describe(){
- return `${this.name} has ${this.health} health points , ${this.strength} as strength and ${this.xp} XP points`;
+ return `${this.name} has ${this.health} health points , ${this.strength} as strength and ${this.xp} XP points,${this.gold}gold,and ${this.keys}keys`;
   }
 }
 
-const myObject = new MyClass("Bert",100,50);
-myObject.method1()
+const aurora = new Character("Aurora",150,25)
+const glacius = new Character("Glacius",130,30)
 
-console.log(this);
+console.log("Welcome to the adventure!Here are our heroes:");
+console.log(aurora.describe());
+console.log(glacius.describe());
+
+
+const monster = new Character("Spike",40,20)
+console.log("A wild monster has appeared: it's named " + monster.name);
+
+monster.attack(aurora)
+monster.attack(glacius)
+
+aurora.attack(monster)
+glacius.attack(monster)
+
+console.log(aurora.describe());
+console.log(glacius.describe());
